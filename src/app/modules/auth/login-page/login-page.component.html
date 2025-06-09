@@ -1,1 +1,100 @@
-<p>login-page works!</p>
+<div class="flex h-screen w-full items-center justify-center px-4">
+  <div
+    class="mx-auto flex w-full max-w-sm flex-col rounded-lg bg-white px-1 py-6 shadow sm:w-96"
+  >
+    <!-- Zona encargada de la descripción de la plataforma -->
+    <div class="flex flex-col space-y-1.5 p-6">
+      <img
+        loading="lazy"
+        width="100"
+        height="100"
+        decoding="async"
+        class="mx-auto mb-2"
+        src="/images/logo-sm.jpeg"
+        alt="marco-logo"
+        style="color: transparent"
+      />
+      <div class="text-2xl font-semibold tracking-tight">
+        Alerta Ambientales - UNMSM
+      </div>
+      <div class="text-muted-color text-sm">
+        Ingresa tus credenciales para acceder.
+      </div>
+    </div>
+
+    <!-- Zona encargada del formulario -->
+    <div class="p-6 pt-0">
+      <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="logIn()">
+        <!-- Define los inputs para mas información visite InputGroup de PrimeNG -->
+        <div class="space-y-2">
+          <label
+            class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >Usuario:</label
+          >
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="fa fa-user"></i>
+            </p-inputgroup-addon>
+            <input
+              pInputText
+              type="text"
+              placeholder="Usuario"
+              formControlName="usuario"
+            />
+          </p-inputgroup>
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Contraseña:
+          </label>
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="fa fa-lock"></i>
+            </p-inputgroup-addon>
+
+            <input
+              class="w-full pr-10"
+              pInputText
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Contraseña"
+              formControlName="password"
+            />
+
+            <p-inputgroup-addon
+              class="cursor-pointer"
+              (click)="showPassword = !showPassword"
+            >
+              <i [ngClass]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </p-inputgroup-addon>
+          </p-inputgroup>
+        </div>
+
+        <!-- Define el boton para ingresar los datos del formulario -->
+        <p-button
+          type="submit"
+          [label]="isLoading ? 'Procesando...' : 'Entrar'"
+          icon="fa fa-sign-in"
+          severity="contrast"
+          [fluid]="true"
+          [disabled]="isLoading"
+          class="inline-flex w-full items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap"
+          [ngClass]="{
+            'cursor-not-allowed': isLoading,
+            'cursor-pointer': !isLoading,
+          }"
+        >
+          <ng-template pTemplate="icon">
+            <ng-container *ngIf="!isLoading; else loadingIcon">
+              <i class="fa fa-sign-in"></i>
+            </ng-container>
+            <ng-template #loadingIcon>
+              <i class="fa fa-spinner animate-spin"></i>
+            </ng-template>
+          </ng-template>
+        </p-button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<!-- OCUPA TODO EL ESPACIO CUANDO ES UNO -->
+<div
+  class="grid gap-6 p-4"
+  [ngClass]="{
+    'grid-cols-1': aulas.length === 1,
+    'grid-cols-1 md:grid-cols-2': aulas.length > 1,
+  }"
+>
+  <div *ngFor="let aula of aulas">
+    <app-salones-card [aula]="aula" class="h-full" />
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<p-card class="h-full w-full rounded-2xl bg-white shadow-sm">
+  <div class="flex flex-col gap-4 p-4">
+    <!-- Título -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-800">{{ aula.nombre }}</h2>
+      <p class="text-sm text-gray-500">{{ aula.ubicacion }}</p>
+    </div>
+
+    <!-- Variables ambientales -->
+    <div
+      class="grid grid-cols-1 gap-x-6 gap-y-2 text-sm text-gray-700 md:grid-cols-2 lg:grid-cols-3"
+    >
+      <div class="space-x-2">
+        <span class="font-semibold">🌡 Temperatura:</span>
+        <span>{{ aula.temperatura }} °C</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">💧 Humedad:</span>
+        <span>{{ aula.humedad }} %</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🧪 CO₂:</span>
+        <span>{{ aula.co2_ppm }} ppm</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🏫 Aforo:</span>
+        <span>{{ aula.aforo }}</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🧍 Conteo:</span>
+        <span>{{ aula.conteo_personas }}</span>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-2 pt-4">
+      <button
+        pButton
+        label="📈 Métricas"
+        class="p-button p-button-outlined p-button-sm"
+        (click)="verMetricas(aula)"
+      ></button>
+
+      <button
+        pButton
+        label="⚙️ Accionar"
+        class="p-button p-button-primary p-button-sm"
+        (click)="accionar(aula)"
+      ></button>
+    </div>
+  </div>
+</p-card>

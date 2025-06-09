@@ -7,3 +7,19 @@ body {
   padding: 0;
   margin: 0;
 }
+
+@layer utilities {
+  .show-at-960 {
+    @apply hidden;
+  }
+
+  @media (max-width: 960px) {
+    .show-at-960 {
+      @apply block;
+    }
+
+    .hide-at-960 {
+      @apply hidden;
+    }
+  }
+}
