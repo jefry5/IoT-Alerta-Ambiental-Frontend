@@ -73,7 +73,7 @@ export class LoginPageComponent {
           })
         ).subscribe({
           next: (resp: any) => {
-            this.cardService.setCard(resp.usuario);
+            this.cardService.setCard(resp);
             this.authService.isLogged = true;
             this.router.navigate(['/dashboard']);
           },

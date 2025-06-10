@@ -5,5 +5,6 @@ export interface Aula {
     humedad: number;
     co2_ppm: number;
     aforo: number;
-    conteo_personas: number;
+    conteo_personas?: number;
+    updatedAt?: string;
 }
