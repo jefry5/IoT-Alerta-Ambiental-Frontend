@@ -45,7 +45,8 @@ export class SalonesPageComponent implements OnInit {
       temperatura: data.temperatura,
       humedad: data.humedad,
       co2_ppm: data.co2_ppm,
-      updatedAt: data.updatedAt,
+      createdAt: data.createdAt,
+      conteo_personas: aula.conteo_personas,
     }
   }
 }
