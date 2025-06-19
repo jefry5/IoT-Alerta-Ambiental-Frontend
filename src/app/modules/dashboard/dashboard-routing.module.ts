@@ -4,6 +4,11 @@ import { SalonesPageComponent } from './salones-page/salones-page.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/dashboard/aulas',
+    pathMatch: 'full',
+  },
+  {
     path: 'aulas',
     component: SalonesPageComponent,
   },

@@ -17,10 +17,12 @@ export class SalonesPageComponent implements OnInit {
   constructor(private dashboardService: DashboardService, private messagesService: MessagesService) { }
 
   ngOnInit(): void {
+    this.aulas = [];
+
     AULAS_REGISTRADAS.forEach(aulaName => {
       this.dashboardService.getSensorData(aulaName).subscribe({
         next: (resp: any) => {
-          const aula: Aula = this.fillAulaData(resp);
+          const aula: Aula = this.dashboardService.fillAulaData(resp);
           this.aulas.push(aula);
         },
         error: () => {
@@ -31,22 +33,5 @@ export class SalonesPageComponent implements OnInit {
         }
       })
     })
-  }
-
-  // Método para rellenar los datos del aula
-  private fillAulaData(resp: any): Aula {
-    const data = resp.data;
-    const aula = data.aula;
-
-    return {
-      nombre: aula.nombre,
-      ubicacion: aula.ubicacion,
-      aforo: aula.aforo,
-      temperatura: data.temperatura,
-      humedad: data.humedad,
-      co2_ppm: data.co2_ppm,
-      createdAt: data.createdAt,
-      conteo_personas: aula.conteo_personas,
-    }
   }
 }

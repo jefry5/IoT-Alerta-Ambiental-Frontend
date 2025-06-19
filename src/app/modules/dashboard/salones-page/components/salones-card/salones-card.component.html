@@ -32,25 +32,87 @@
       </div>
       <div class="space-x-2">
         <span class="font-semibold">⏱️ Fecha:</span>
-        <span>{{ aula.createdAt }}</span>
+        <span>{{ aula.createdAt | date: "medium" }}</span>
       </div>
     </div>
 
     <!-- Botones -->
-    <div class="flex justify-end gap-2 pt-4">
-      <button
-        pButton
-        label="📈 Métricas"
-        class="p-button p-button-outlined p-button-sm"
-        (click)="verMetricas(aula)"
-      ></button>
+    <div
+      class="flex flex-col items-end justify-end gap-2 pt-4 sm:flex-row sm:items-center sm:justify-end"
+    >
+      <!-- Métricas -->
+      <div class="flex justify-center">
+        <p-button
+          label="Métricas"
+          icon="fa fa-bar-chart"
+          severity="secondary"
+          (click)="verMetricas()"
+        />
+        <app-salones-chart
+          *ngIf="mostrarDialogo"
+          [aulaName]="aula.nombre"
+          [aulaAforo]="aula.aforo"
+          [visible]="mostrarDialogo"
+          (cerrar)="mostrarDialogo = false"
+        />
+      </div>
 
-      <button
-        pButton
-        label="⚙️ Accionar"
-        class="p-button p-button-primary p-button-sm"
-        (click)="accionar(aula)"
-      ></button>
+      <!-- Diagnostico -->
+      <div class="flex justify-center">
+        <p-button
+          label="Diagnóstico"
+          icon="fa fa-lightbulb"
+          severity="secondary"
+          (click)="odiagnostic.toggle($event)"
+        />
+        <p-popover #odiagnostic>
+          <div class="space-y-4 text-sm text-gray-800">
+            <div class="flex items-center gap-2 text-base font-semibold">
+              Diagnóstico del aula
+            </div>
+
+            <ul class="list-inside list-disc space-y-1">
+              <li *ngFor="let r of recomendaciones">{{ r }}</li>
+            </ul>
+
+            <div class="flex w-full items-center justify-end">
+              <p-button
+                icon="fas fa-bolt"
+                label="Accionar"
+                [rounded]="true"
+                severity="contrast"
+                size="small"
+                (click)="tomarAccionDianostico(); odiagnostic.hide()"
+              />
+            </div>
+          </div>
+        </p-popover>
+      </div>
+
+      <!-- Dispositivos -->
+      <div class="flex justify-center">
+        <p-button
+          label="Dispositivos"
+          icon="fa fa-list"
+          severity="primary"
+          (click)="oplug.toggle($event)"
+        />
+        <p-popover #oplug>
+          <div class="flex w-full flex-col space-y-2">
+            <span class="text-sm font-medium text-gray-700">
+              Lista de dispositivos
+            </span>
+            <div class="flex items-center justify-between">
+              <label for="plugToggle" class="text-sm">Enchufe</label>
+              <p-toggleswitch
+                inputId="plugToggle"
+                [(ngModel)]="checkedPlug"
+                (onChange)="onTogglePlugChange($event)"
+              />
+            </div>
+          </div>
+        </p-popover>
+      </div>
     </div>
   </div>
 </p-card>
