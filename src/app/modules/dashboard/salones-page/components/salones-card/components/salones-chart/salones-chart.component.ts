@@ -89,15 +89,15 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
     const baseScatter = () => ({ datasets: [{ data: [], backgroundColor: '', label: '' }] });
 
     this.scatterTempData = baseScatter();
-    this.scatterTempData.datasets[0].label = 'Aforo vs Temperatura';
+    this.scatterTempData.datasets[0].label = 'Conteo vs Temperatura';
     this.scatterTempData.datasets[0].backgroundColor = '#42A5F5';
 
     this.scatterHumData = baseScatter();
-    this.scatterHumData.datasets[0].label = 'Aforo vs Humedad';
+    this.scatterHumData.datasets[0].label = 'Conteo vs Humedad';
     this.scatterHumData.datasets[0].backgroundColor = '#66BB6A';
 
     this.scatterCo2Data = baseScatter();
-    this.scatterCo2Data.datasets[0].label = 'Aforo vs CO2';
+    this.scatterCo2Data.datasets[0].label = 'Conteo vs CO2';
     this.scatterCo2Data.datasets[0].backgroundColor = '#FF7043';
 
     this.lineTempData = baseLine();
@@ -163,12 +163,12 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
   }
 
   private updatePointOnGraphics(data: ChartAula): void {
-    const { temperatura, humedad, co2_ppm, createdAt } = data;
+    const { temperatura, humedad, co2_ppm, createdAt, cantidad } = data;
     const hora = new Date(createdAt!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    this.addScatterPoint(this.scatterTempData, this.chartTemp, this.aulaAforo, temperatura);
-    this.addScatterPoint(this.scatterHumData, this.chartHum, this.aulaAforo, humedad);
-    this.addScatterPoint(this.scatterCo2Data, this.chartCo2, this.aulaAforo, co2_ppm);
+    this.addScatterPoint(this.scatterTempData, this.chartTemp, cantidad, temperatura);
+    this.addScatterPoint(this.scatterHumData, this.chartHum, cantidad, humedad);
+    this.addScatterPoint(this.scatterCo2Data, this.chartCo2, cantidad, co2_ppm);
 
     this.addLinePoint(this.lineTempData, this.lineTemp, hora, temperatura);
     this.addLinePoint(this.lineHumData, this.lineHum, hora, humedad);

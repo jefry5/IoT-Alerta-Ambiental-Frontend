@@ -3,4 +3,5 @@ export interface ChartAula {
     humedad: number;
     co2_ppm: number;
     createdAt?: string;
+    cantidad: number;
 }

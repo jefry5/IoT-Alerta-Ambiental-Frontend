@@ -1,9 +1,32 @@
 <p-card class="h-full w-full rounded-2xl bg-white shadow-sm">
   <div class="flex flex-col gap-4 p-4">
     <!-- Título -->
-    <div>
-      <h2 class="text-xl font-semibold text-gray-800">{{ aula.nombre }}</h2>
-      <p class="text-sm text-gray-500">{{ aula.ubicacion }}</p>
+    <div
+      class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ aula.nombre }}
+        </h2>
+        <p class="text-sm text-gray-500">{{ aula.ubicacion }}</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <p-tag
+          icon="fa fa-users"
+          value="Aforo: {{ aula.aforo }}"
+          severity="secondary"
+          rounded
+        />
+        <p-tag
+          icon="fa fa-exclamation-triangle"
+          value="Estado: {{ aula.estado | titlecase }}"
+          [severity]="getEstadoSeverity(aula.estado)"
+          rounded
+          [ngClass]="{
+            'animate-pulse': aula.estado.toLowerCase() === 'crítico',
+          }"
+        />
+      </div>
     </div>
 
     <!-- Variables ambientales -->
@@ -21,10 +44,6 @@
       <div class="space-x-2">
         <span class="font-semibold">🧪 CO₂:</span>
         <span>{{ aula.co2_ppm }} ppm</span>
-      </div>
-      <div class="space-x-2">
-        <span class="font-semibold">🏫 Aforo:</span>
-        <span>{{ aula.aforo }}</span>
       </div>
       <div class="space-x-2">
         <span class="font-semibold">🧍 Conteo:</span>
@@ -63,30 +82,60 @@
           label="Diagnóstico"
           icon="fa fa-lightbulb"
           severity="secondary"
-          (click)="odiagnostic.toggle($event)"
+          (click)="mostrarDialogoDiagnostico = true; accionDianostico()"
         />
-        <p-popover #odiagnostic>
+        <p-dialog
+          header="Diagnóstico del Aula"
+          [(visible)]="mostrarDialogoDiagnostico"
+          [modal]="true"
+          [draggable]="false"
+          [resizable]="false"
+          [dismissableMask]="true"
+          [style]="{ width: '100%', maxWidth: '500px' }"
+        >
           <div class="space-y-4 text-sm text-gray-800">
-            <div class="flex items-center gap-2 text-base font-semibold">
-              Diagnóstico del aula
+            <!-- Diagnóstico general -->
+            <div
+              *ngIf="cargandoDiagnostico"
+              class="flex animate-pulse items-center gap-2 text-blue-600"
+            >
+              <i class="fa fa-spin fa-spinner"></i>
+              Generando diagnóstico ambiental...
             </div>
 
-            <ul class="list-inside list-disc space-y-1">
-              <li *ngFor="let r of recomendaciones">{{ r }}</li>
-            </ul>
+            <div
+              *ngIf="!cargandoDiagnostico"
+              class="text-sm text-gray-600 italic"
+            >
+              "{{ diagnostico }}"
+            </div>
 
-            <div class="flex w-full items-center justify-end">
+            <!-- Lista de recomendaciones -->
+            <div *ngIf="!cargandoDiagnostico && recomendaciones.length > 0">
+              <ul class="list-inside list-disc space-y-1">
+                <li *ngFor="let r of recomendaciones">{{ r }}</li>
+              </ul>
+            </div>
+
+            <!-- Botón de acción -->
+            <div class="flex justify-end pt-4">
               <p-button
                 icon="fas fa-bolt"
                 label="Accionar"
                 [rounded]="true"
                 severity="contrast"
                 size="small"
-                (click)="tomarAccionDianostico(); odiagnostic.hide()"
+                (click)="
+                  ejecutarAccionesDispositivos();
+                  mostrarDialogoDiagnostico = false
+                "
+                [disabled]="
+                  cargandoDiagnostico || dispositivosAActivar.length === 0
+                "
               />
             </div>
           </div>
-        </p-popover>
+        </p-dialog>
       </div>
 
       <!-- Dispositivos -->

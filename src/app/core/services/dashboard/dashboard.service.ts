@@ -31,6 +31,12 @@ export class DashboardService {
     return this.http.get(`${this.URL_API}/chart-data-all`, { params, withCredentials: true });
   }
 
+  // Método para obtener el diagnostico del aula
+  getDiagnostico(aulaName: string) {
+    const params = new HttpParams().set('aulaName', aulaName);
+    return this.http.get(`${this.URL_API}/diagnostic`, { params, withCredentials: true });
+  }
+
   // Método para rellenar los datos del aula
   fillAulaData(resp: any): Aula {
     const data = resp.data;
@@ -44,6 +50,7 @@ export class DashboardService {
       humedad: data.humedad,
       co2_ppm: data.co2_ppm,
       createdAt: data.createdAt,
+      estado: aula.estado,
       conteo_personas: aula.conteo_personas,
     }
   }

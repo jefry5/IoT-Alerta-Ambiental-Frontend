@@ -6,5 +6,6 @@ export interface Aula {
     co2_ppm: number;
     aforo: number;
     conteo_personas?: number;
+    estado: string;
     createdAt?: string;
 }
