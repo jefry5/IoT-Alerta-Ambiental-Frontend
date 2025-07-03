@@ -76,6 +76,26 @@
           class="h-full w-full"
         />
       </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs NO2</span>
+        <p-chart
+          #chartNo2
+          type="scatter"
+          [data]="scatterNo2Data"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs NH3</span>
+        <p-chart
+          #chartNh3
+          type="scatter"
+          [data]="scatterNh3Data"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
     </div>
 
     <!-- TITULO DE GRÁFICO DE LÍNEA -->
@@ -111,6 +131,26 @@
           #lineCo2
           type="line"
           [data]="lineCo2Data"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución del NO2</span>
+        <p-chart
+          #lineNo2
+          type="line"
+          [data]="lineNo2Data"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución del NH3</span>
+        <p-chart
+          #lineNh3
+          type="line"
+          [data]="lineNh3Data"
           [options]="lineChartOptions"
           class="h-full w-full"
         />

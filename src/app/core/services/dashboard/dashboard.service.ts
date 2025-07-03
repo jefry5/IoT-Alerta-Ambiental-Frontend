@@ -49,6 +49,8 @@ export class DashboardService {
       temperatura: data.temperatura,
       humedad: data.humedad,
       co2_ppm: data.co2_ppm,
+      no2_ppm: data.no2_ppm,
+      nh3_ppm: data.nh3_ppm,
       createdAt: data.createdAt,
       estado: aula.estado,
       conteo_personas: aula.conteo_personas,

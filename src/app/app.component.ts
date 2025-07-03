@@ -5,6 +5,7 @@ import { MenuBarComponent } from './shared/components/menu-bar/menu-bar.componen
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
+import { GuardService } from './core/services/guard.service';
 
 @Component({
   selector: 'app-root',
@@ -18,10 +19,12 @@ export class AppComponent implements OnInit {
   //Variable que controla si nos encontramos en la pagina de autenticación
   isPageAuth: boolean = false;
 
-  constructor(private router: Router, private primeng: PrimeNG) { }
+  constructor(private router: Router, private primeng: PrimeNG, private guardService: GuardService) { }
 
   ngOnInit(): void {
     this.primeng.ripple.set(true);
+
+    this.guardService.resolveCookieStatus();
 
     //Permite saber si nos encontramos en la ruta '/auth/**' para cambiar el estado de 'isPageAuth'
     this.router.events

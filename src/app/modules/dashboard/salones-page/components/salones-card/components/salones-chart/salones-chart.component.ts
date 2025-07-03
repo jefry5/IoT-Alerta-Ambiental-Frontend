@@ -27,19 +27,28 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartTemp') chartTemp!: any;
   @ViewChild('chartHum') chartHum!: any;
   @ViewChild('chartCo2') chartCo2!: any;
+  @ViewChild('chartNo2') chartNo2!: any;
+  @ViewChild('chartNh3') chartNh3!: any;
   @ViewChild('lineTemp') lineTemp!: any;
   @ViewChild('lineHum') lineHum!: any;
   @ViewChild('lineCo2') lineCo2!: any;
+  @ViewChild('lineNo2') lineNo2!: any;
+  @ViewChild('lineNh3') lineNh3!: any;
+
 
   // Datos de la gráfica por tipo de variable para scatter
   scatterTempData: any;
   scatterHumData: any;
   scatterCo2Data: any;
+  scatterNo2Data: any;
+  scatterNh3Data: any;
 
   // Datos de la gráfica por tipo de variable para line
   lineTempData: any;
   lineHumData: any;
   lineCo2Data: any;
+  lineNo2Data: any;
+  lineNh3Data: any;
 
   scatterChartOptions = {
     responsive: true,
@@ -100,6 +109,14 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
     this.scatterCo2Data.datasets[0].label = 'Conteo vs CO2';
     this.scatterCo2Data.datasets[0].backgroundColor = '#FF7043';
 
+    this.scatterNo2Data = baseScatter();
+    this.scatterNo2Data.datasets[0].label = 'Conteo vs NO2';
+    this.scatterNo2Data.datasets[0].backgroundColor = '#FF7043';
+
+    this.scatterNh3Data = baseScatter();
+    this.scatterNh3Data.datasets[0].label = 'Conteo vs NH3';
+    this.scatterNh3Data.datasets[0].backgroundColor = '#FF7043';
+
     this.lineTempData = baseLine();
     this.lineTempData.datasets[0].label = 'Temperatura';
     this.lineTempData.datasets[0].borderColor = '#42A5F5';
@@ -111,6 +128,14 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
     this.lineCo2Data = baseLine();
     this.lineCo2Data.datasets[0].label = 'CO2 (ppm)';
     this.lineCo2Data.datasets[0].borderColor = '#FF7043';
+
+    this.lineNo2Data = baseLine();
+    this.lineNo2Data.datasets[0].label = 'NO2 (ppm)';
+    this.lineNo2Data.datasets[0].borderColor = '#FF7043';
+
+    this.lineNh3Data = baseLine();
+    this.lineNh3Data.datasets[0].label = 'NH3 (ppm)';
+    this.lineNh3Data.datasets[0].borderColor = '#FF7043';
   }
 
   private firstGraphUpdate(): void {
@@ -163,16 +188,20 @@ export class SalonesChartComponent implements OnInit, OnDestroy {
   }
 
   private updatePointOnGraphics(data: ChartAula): void {
-    const { temperatura, humedad, co2_ppm, createdAt, cantidad } = data;
+    const { temperatura, humedad, co2_ppm, no2_ppm, nh3_ppm, createdAt, cantidad } = data;
     const hora = new Date(createdAt!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     this.addScatterPoint(this.scatterTempData, this.chartTemp, cantidad, temperatura);
     this.addScatterPoint(this.scatterHumData, this.chartHum, cantidad, humedad);
     this.addScatterPoint(this.scatterCo2Data, this.chartCo2, cantidad, co2_ppm);
+    this.addScatterPoint(this.scatterNo2Data, this.chartNo2, cantidad, no2_ppm);
+    this.addScatterPoint(this.scatterNh3Data, this.chartNh3, cantidad, nh3_ppm);
 
     this.addLinePoint(this.lineTempData, this.lineTemp, hora, temperatura);
     this.addLinePoint(this.lineHumData, this.lineHum, hora, humedad);
     this.addLinePoint(this.lineCo2Data, this.lineCo2, hora, co2_ppm);
+    this.addLinePoint(this.lineNo2Data, this.lineNo2, hora, no2_ppm);
+    this.addLinePoint(this.lineNh3Data, this.lineNh3, hora, nh3_ppm);
   }
 
   private addScatterPoint(chartData: any, chartRef: any, x: number, y: number): void {

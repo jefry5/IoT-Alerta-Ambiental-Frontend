@@ -66,10 +66,19 @@ export class SalonesCardComponent implements OnInit {
   private getLastAulaData(): void {
     this.dashboardService.getSensorData(this.aula.nombre).subscribe({
       next: (res: any) => {
-        this.aula = this.dashboardService.fillAulaData(res) || {};
+        this.aula = this.dashboardService.fillAulaData(res);
+        if (this.aula.estado === 'leve' || this.aula.estado === 'moderado') {
+          this.controlarEnchufe(false);
+        }
+        if (this.aula.estado === 'crítico') {
+          this.controlarEnchufe(true);
+        }
       },
       error: () => {
-
+        this.messagesService.errorMessage(
+          'Error al cargar datos del aula',
+          `No se pudo obtener los datos del aula ${this.aula.nombre}`,
+        );
       }
     })
   }
@@ -78,8 +87,21 @@ export class SalonesCardComponent implements OnInit {
     this.pollingSub = interval(30000)
       .pipe(switchMap(() => this.dashboardService.getSensorData(this.aula.nombre)))
       .subscribe({
-        next: (res: any) => this.aula = this.dashboardService.fillAulaData(res) || {},
-        error: () => { }
+        next: (res: any) => {
+          this.aula = this.dashboardService.fillAulaData(res);
+          if (this.aula.estado === 'leve' || this.aula.estado === 'moderado') {
+            this.controlarEnchufe(false);
+          }
+          if (this.aula.estado === 'crítico') {
+            this.controlarEnchufe(true);
+          }
+        },
+        error: () => {
+          this.messagesService.errorMessage(
+            'Error al cargar datos del aula',
+            `No se pudo obtener los datos del aula ${this.aula.nombre}`,
+          );
+        }
       });
   }
 
@@ -159,6 +181,11 @@ export class SalonesCardComponent implements OnInit {
     // lógica para accionar (encender ventilación, alarma, etc.)
     this.plugService.emitPlugOn().subscribe({
       next: (resp: any) => {
+        if (resp.status === 'on'){
+          this.checkedPlug = true;
+          return;
+        }
+
         const result = resp.result;
         if (result.success) {
           this.checkedPlug = true;
@@ -188,6 +215,11 @@ export class SalonesCardComponent implements OnInit {
     // lógica para apagar el enchufe
     this.plugService.emitPlugOff().subscribe({
       next: (resp: any) => {
+        if ( resp.status === 'off'){
+          this.checkedPlug = false;
+          return;
+        }
+
         const result = resp.result;
         if (result.success) {
           this.checkedPlug = false;
