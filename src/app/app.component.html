@@ -1,1 +1,18 @@
-<router-outlet />
+<div class="flex h-full w-full flex-col">
+  <!-- Oculta la barra de menu siempre y cuando se encuentre en la pagina de autenticación -->
+  <div class="flex h-[90px] w-full" *ngIf="!isPageAuth">
+    <app-menu-bar class="fixed top-0 z-50 w-full" />
+  </div>
+  <!-- Muestra los endpoints en el resto de la pantalla -->
+  <div class="maxhmd:pt-[10px] flex-1 overflow-y-auto">
+    <router-outlet />
+  </div>
+</div>
+
+<!-- Muestra el mensaje emergente en la esquina inferior derecha mediante la posición y key (Modificaciones en MessageService) -->
+<p-toast
+  [breakpoints]="{ '960px': { width: '80vw' }, '640px': { width: '94vw' } }"
+  [preventOpenDuplicates]="true"
+  position="bottom-right"
+  key="br"
+/>

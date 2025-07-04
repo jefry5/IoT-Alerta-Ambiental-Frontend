@@ -1,0 +1,20 @@
+<div class="p-4">
+  <h2
+    class="mb-4 text-center text-xl font-semibold text-gray-800 md:text-left md:text-2xl"
+  >
+    Aulas Monitoreadas
+  </h2>
+
+  <!-- OCUPA TODO EL ESPACIO CUANDO ES UNO -->
+  <div
+    class="grid gap-6"
+    [ngClass]="{
+      'grid-cols-1': aulas.length === 1,
+      'grid-cols-1 md:grid-cols-2': aulas.length > 1,
+    }"
+  >
+    <div *ngFor="let aula of aulas">
+      <app-salones-card [aula]="aula" class="h-full" />
+    </div>
+  </div>
+</div>

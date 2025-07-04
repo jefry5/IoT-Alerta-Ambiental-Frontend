@@ -1,0 +1,160 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [header]="'Métricas del aula ' + aulaName"
+  (onHide)="cerrarDialogo()"
+  [style]="{ width: '90vw', height: '90vh' }"
+  [maximizable]="true"
+>
+  <div class="flex h-full w-full flex-col space-y-5 p-3">
+    <!-- BOTÓN SWITCH PARA MOSTRAR DATOS DE LAS ÚLTIMAS 12 HORAS -->
+    <div
+      class="flex w-full flex-col items-start justify-between gap-2 md:flex-row md:items-center md:gap-0"
+    >
+      <!-- NOTA IZQUIERDA -->
+      <span class="w-full text-left text-sm italic md:w-auto">
+        • Nota: Los datos se actualizan cada treinta segundos.
+      </span>
+
+      <!-- SWITCH DERECHA -->
+      <div class="flex items-center gap-3 self-end md:self-auto">
+        <label for="historicalToggle" class="text-sm">Últimas 12 horas</label>
+        <p-toggleswitch
+          [(ngModel)]="checked"
+          inputId="historicalToggle"
+          (onChange)="onToggleSwitchChange($event)"
+        >
+          <ng-template #handle let-checked="checked">
+            <i
+              [ngClass]="[
+                '!text-xs',
+                'fa',
+                checked ? 'fa-circle-check' : 'fa-circle-xmark',
+              ]"
+            ></i>
+          </ng-template>
+        </p-toggleswitch>
+      </div>
+    </div>
+
+    <!-- TITULO DE GRÁFICO DE SCATTER -->
+    <div class="font-bold underline">
+      {{ `Análisis de aforo en el aula ${aulaName}` }}
+    </div>
+
+    <!-- GRÁFICOS DE SCATTER -->
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs Temperatura</span>
+        <p-chart
+          #chartTemp
+          type="scatter"
+          [data]="scatterTempData"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs Humedad</span>
+        <p-chart
+          #chartHum
+          type="scatter"
+          [data]="scatterHumData"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs CO2</span>
+        <p-chart
+          #chartCo2
+          type="scatter"
+          [data]="scatterCo2Data"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs NO2</span>
+        <p-chart
+          #chartNo2
+          type="scatter"
+          [data]="scatterNo2Data"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-3">
+        <span class="font-semibold italic">Conteo vs NH3</span>
+        <p-chart
+          #chartNh3
+          type="scatter"
+          [data]="scatterNh3Data"
+          [options]="scatterChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+    </div>
+
+    <!-- TITULO DE GRÁFICO DE LÍNEA -->
+    <div class="font-bold underline">
+      Evolución de las variables función del tiempo
+    </div>
+
+    <!-- GRÁFICO DE LÍNEA -->
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución de la Temperatura</span>
+        <p-chart
+          #lineTemp
+          type="line"
+          [data]="lineTempData"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución de la Humedad</span>
+        <p-chart
+          #lineHum
+          type="line"
+          [data]="lineHumData"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución del CO2</span>
+        <p-chart
+          #lineCo2
+          type="line"
+          [data]="lineCo2Data"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución del NO2</span>
+        <p-chart
+          #lineNo2
+          type="line"
+          [data]="lineNo2Data"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <span class="font-semibold italic">Evolución del NH3</span>
+        <p-chart
+          #lineNh3
+          type="line"
+          [data]="lineNh3Data"
+          [options]="lineChartOptions"
+          class="h-full w-full"
+        />
+      </div>
+    </div>
+  </div>
+</p-dialog>

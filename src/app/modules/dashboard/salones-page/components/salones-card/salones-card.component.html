@@ -1,0 +1,175 @@
+<p-card class="h-full w-full rounded-2xl bg-white shadow-sm">
+  <div class="flex flex-col gap-4 p-4">
+    <!-- Título -->
+    <div
+      class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
+    >
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ aula.nombre }}
+        </h2>
+        <p class="text-sm text-gray-500">{{ aula.ubicacion }}</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <p-tag
+          icon="fa fa-users"
+          value="Aforo: {{ aula.aforo }}"
+          severity="secondary"
+          rounded
+        />
+        <p-tag
+          icon="fa fa-exclamation-triangle"
+          value="Estado: {{ aula.estado | titlecase }}"
+          [severity]="getEstadoSeverity(aula.estado)"
+          rounded
+          [ngClass]="{
+            'animate-pulse': aula.estado.toLowerCase() === 'crítico',
+          }"
+        />
+      </div>
+    </div>
+
+    <!-- Variables ambientales -->
+    <div
+      class="grid grid-cols-1 gap-x-6 gap-y-2 text-sm text-gray-700 md:grid-cols-2 lg:grid-cols-3"
+    >
+      <div class="space-x-2">
+        <span class="font-semibold">🌡 Temperatura:</span>
+        <span>{{ aula.temperatura }} °C</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">💧 Humedad:</span>
+        <span>{{ aula.humedad }} %</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🧪 CO₂:</span>
+        <span>{{ aula.co2_ppm }} ppm</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">⚗️ NO₂:</span>
+        <span>{{ aula.no2_ppm }} ppm</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🧫 NH₃:</span>
+        <span>{{ aula.nh3_ppm }} ppm</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">🧍 Conteo:</span>
+        <span>{{ aula.conteo_personas }}</span>
+      </div>
+      <div class="space-x-2">
+        <span class="font-semibold">⏱️ Fecha:</span>
+        <span>{{ aula.createdAt | date: "medium" }}</span>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div
+      class="flex flex-col items-end justify-end gap-2 pt-4 sm:flex-row sm:items-center sm:justify-end"
+    >
+      <!-- Métricas -->
+      <div class="flex justify-center">
+        <p-button
+          label="Métricas"
+          icon="fa fa-bar-chart"
+          severity="secondary"
+          (click)="verMetricas()"
+        />
+        <app-salones-chart
+          *ngIf="mostrarDialogo"
+          [aulaName]="aula.nombre"
+          [aulaAforo]="aula.aforo"
+          [visible]="mostrarDialogo"
+          (cerrar)="mostrarDialogo = false"
+        />
+      </div>
+
+      <!-- Diagnostico -->
+      <div class="flex justify-center">
+        <p-button
+          label="Diagnóstico"
+          icon="fa fa-lightbulb"
+          severity="secondary"
+          (click)="mostrarDialogoDiagnostico = true; accionDianostico()"
+        />
+        <p-dialog
+          header="Diagnóstico del Aula"
+          [(visible)]="mostrarDialogoDiagnostico"
+          [modal]="true"
+          [draggable]="false"
+          [resizable]="false"
+          [dismissableMask]="true"
+          [style]="{ width: '100%', maxWidth: '500px' }"
+        >
+          <div class="space-y-4 text-sm text-gray-800">
+            <!-- Diagnóstico general -->
+            <div
+              *ngIf="cargandoDiagnostico"
+              class="flex animate-pulse items-center gap-2 text-blue-600"
+            >
+              <i class="fa fa-spin fa-spinner"></i>
+              Generando diagnóstico ambiental...
+            </div>
+
+            <div
+              *ngIf="!cargandoDiagnostico"
+              class="text-sm text-gray-600 italic"
+            >
+              "{{ diagnostico }}"
+            </div>
+
+            <!-- Lista de recomendaciones -->
+            <div *ngIf="!cargandoDiagnostico && recomendaciones.length > 0">
+              <ul class="list-inside list-disc space-y-1">
+                <li *ngFor="let r of recomendaciones">{{ r }}</li>
+              </ul>
+            </div>
+
+            <!-- Botón de acción -->
+            <div class="flex justify-end pt-4">
+              <p-button
+                icon="fas fa-bolt"
+                label="Accionar"
+                [rounded]="true"
+                severity="contrast"
+                size="small"
+                (click)="
+                  ejecutarAccionesDispositivos();
+                  mostrarDialogoDiagnostico = false
+                "
+                [disabled]="
+                  cargandoDiagnostico || dispositivosAActivar.length === 0
+                "
+              />
+            </div>
+          </div>
+        </p-dialog>
+      </div>
+
+      <!-- Dispositivos -->
+      <div class="flex justify-center">
+        <p-button
+          label="Dispositivos"
+          icon="fa fa-list"
+          severity="primary"
+          (click)="oplug.toggle($event)"
+        />
+        <p-popover #oplug>
+          <div class="flex w-full flex-col space-y-2">
+            <span class="text-sm font-medium text-gray-700">
+              Lista de dispositivos
+            </span>
+            <div class="flex items-center justify-between">
+              <label for="plugToggle" class="text-sm">Enchufe</label>
+              <p-toggleswitch
+                inputId="plugToggle"
+                [(ngModel)]="checkedPlug"
+                (onChange)="onTogglePlugChange($event)"
+              />
+            </div>
+          </div>
+        </p-popover>
+      </div>
+    </div>
+  </div>
+</p-card>

@@ -1,0 +1,15 @@
+<nav>
+  <p-menubar [model]="items">
+    <ng-template #start>
+      <div class="hide-at-960">
+        <img src="/images/logo-sm.jpeg" class="w-[45px]" />
+      </div>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="show-at-960">
+        <img src="/images/logo-sm.jpeg" class="w-[45px]" />
+      </div>
+    </ng-template>
+  </p-menubar>
+</nav>
